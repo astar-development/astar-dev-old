@@ -40,7 +40,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     permissions:
-      id-token: write #This is required for requesting the JWT
       contents: read #This is required for actions/checkout
 
     steps:
@@ -50,17 +49,11 @@ jobs:
           name: node-app
           path: dist
       
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_42BC48339D9D48479A3E0427EB0A463C }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_CF41939D2AA94A22AFBA020384324388 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_A09F74F046614D16ADA74881D3598616 }}
-
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'astar-dev'
           slot-name: 'Production'
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
           package: dist
