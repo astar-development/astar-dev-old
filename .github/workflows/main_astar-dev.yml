@@ -1,12 +1,8 @@
-name: Deploy AStar Web to Azure App Service
+name: Deploy Vue to Azure App Service
 
 on:
-  workflow_dispatch:
-  pull_request:
-    types: [ opened, synchronize, reopened ]
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build-and-deploy:
@@ -30,4 +26,3 @@ jobs:
           app-name: astar-dev
           publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
           package: ./dist
-
